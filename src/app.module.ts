@@ -7,6 +7,8 @@ import { ResultModule } from './result/result.module';
 import { OperationTypeModule } from './operation-type/operation-type.module';
 import { StatusOperationModule } from './status-operation/status-operation.module';
 import { StrategyModule } from './strategy/strategy.module';
+import { ConfirmationModule } from './confirmation/confirmation.module';
+import { ConditionModule } from './condition/condition.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { StrategyModule } from './strategy/strategy.module';
     OperationTypeModule,
     StatusOperationModule,
     StrategyModule,
+    ConfirmationModule,
+    ConditionModule,
   ],
   controllers: [],
   providers: [],

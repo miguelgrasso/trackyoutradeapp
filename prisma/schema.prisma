@@ -69,3 +69,24 @@ model Strategy {
   createdAt   DateTime @default(now())
   status      String   @default("active")
 }
+
+model Confirmation {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime    @default(now())
+  status      String      @default("active")
+  updatedAt   DateTime    @updatedAt
+  conditions  Condition[] // Relación uno a muchos con Condition
+}
+
+model Condition {
+  id             Int          @id @default(autoincrement())
+  name           String
+  description    String
+  createdAt      DateTime     @default(now())
+  status         String       @default("active")
+  updatedAt      DateTime     @updatedAt
+  confirmationId Int          // Foreign key to Confirmation
+  confirmation   Confirmation @relation(fields: [confirmationId], references: [id])
+}
