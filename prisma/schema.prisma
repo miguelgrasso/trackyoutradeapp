@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Trade {
+  id              Int      @id @default(autoincrement())
+  symbolId        Int      // Foreign key to Symbol
+  symbol          Symbol   @relation(fields: [symbolId], references: [id])
+  operationTypeId Int      // Foreign key to OperationType
+  operationType   OperationType @relation(fields: [operationTypeId], references: [id])
+  resultId        Int      // Foreign key to Result
+  result          Result   @relation(fields: [resultId], references: [id])
+  statusOperationId Int    // Foreign key to StatusOperation
+  statusOperation StatusOperation @relation(fields: [statusOperationId], references: [id])
+  quantity        Float
+  dateEntry       DateTime
+  priceEntry      Float
+  priceExit       Float
+  spread          Float
+}
+
+model Symbol {
+  id          Int      @id @default(autoincrement())
+  codeSymbol  String
+  label       String
+  createdAt   DateTime @default(now())
+  trades      Trade[]  // One-to-many relationship with Trade
+}
+
+model OperationType {
+  id          Int      @id @default(autoincrement())
+  label       String
+  operation   String
+  createdAt   DateTime @default(now())
+  trades      Trade[]  // One-to-many relationship with Trade
+}
+
+model Result {
+  id          Int      @id @default(autoincrement())
+  label       String
+  result      String
+  createdAt   DateTime @default(now())
+  trades      Trade[]  // One-to-many relationship with Trade
+}
+
+model StatusOperation {
+  id          Int      @id @default(autoincrement())
+  label       String
+  status      String
+  createdAt   DateTime @default(now())
+  trades      Trade[]  // One-to-many relationship with Trade
+}
+
+model Strategy {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  status      String   @default("active")
+}
