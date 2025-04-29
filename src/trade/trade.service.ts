@@ -18,7 +18,8 @@ export class TradeService {
         dateEntry: createTradeDto.dateEntry,
         priceEntry: createTradeDto.priceEntry,
         priceExit: createTradeDto.priceExit,
-        spread: createTradeDto.spread,
+        spread: createTradeDto.spread,       
+        strategyId: createTradeDto.strategyId,
       },
     });
   }
@@ -30,6 +31,7 @@ export class TradeService {
         operationType: true,
         result: true,
         statusOperation: true,
+        strategy: true,
       },
     });
   }
@@ -42,6 +44,7 @@ export class TradeService {
         operationType: true,
         result: true,
         statusOperation: true,
+        strategy: true,
       },
     });
   }

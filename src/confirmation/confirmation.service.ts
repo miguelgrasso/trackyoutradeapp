@@ -22,6 +22,12 @@ export class ConfirmationService {
     });
   }
 
+  findConditions(id: number) {
+    return this.prisma.condition.findMany({
+      where: { confirmationId: id },
+    });
+  }
+
   update(id: number, updateConfirmationDto: UpdateConfirmationDto) {
     return this.prisma.confirmation.update({
       where: { id },

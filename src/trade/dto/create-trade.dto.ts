@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNumber, IsDate, IsNotEmpty } from 'class-validator';
+import { IsInt, IsNumber, IsDate, IsNotEmpty, IsString, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateTradeDto {
@@ -76,5 +76,29 @@ export class CreateTradeDto {
     @IsNumber()
     @IsNotEmpty()
     spread: number;
+    
+    @ApiProperty({
+        description: 'URL de la imagen previa',
+        example: 'https://example.com/image.jpg'
+    })
+    @IsString()
+    @IsOptional()
+    imageUrlEntry: string;
+
+    @ApiProperty({
+        description: 'URL de la imagen posterior',
+        example: 'https://example.com/image.jpg'
+    })
+    @IsString()
+    @IsOptional()
+    imageUrlExit: string;
+
+    @ApiProperty({
+        description: 'ID de la estrategia',
+        example: 1
+    })
+    @IsInt()
+    @IsNotEmpty()
+    strategyId: number;
 }
 

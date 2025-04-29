@@ -9,6 +9,9 @@ import { StatusOperationModule } from './status-operation/status-operation.modul
 import { StrategyModule } from './strategy/strategy.module';
 import { ConfirmationModule } from './confirmation/confirmation.module';
 import { ConditionModule } from './condition/condition.module';
+import { StrategyConfirmationModule } from './strategy-confirmation/strategy-confirmation.module';
+import { TradeDetailModule } from './trade-detail/trade-detail.module';
+import { TradeConfirmationModule } from './trade-confirmation/trade-confirmation.module';
 
 @Module({
   imports: [
@@ -22,6 +25,9 @@ import { ConditionModule } from './condition/condition.module';
     StrategyModule,
     ConfirmationModule,
     ConditionModule,
+    StrategyConfirmationModule,
+    TradeDetailModule,
+    TradeConfirmationModule,
   ],
   controllers: [],
   providers: [],

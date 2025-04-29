@@ -8,26 +8,34 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "./ERD.svg" // puedes cambiar esto a ./ERD.png o ./ERD.pdf
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Trade {
-  id              Int      @id @default(autoincrement())
-  symbolId        Int      // Foreign key to Symbol
-  symbol          Symbol   @relation(fields: [symbolId], references: [id])
-  operationTypeId Int      // Foreign key to OperationType
-  operationType   OperationType @relation(fields: [operationTypeId], references: [id])
-  resultId        Int      // Foreign key to Result
-  result          Result   @relation(fields: [resultId], references: [id])
-  statusOperationId Int    // Foreign key to StatusOperation
-  statusOperation StatusOperation @relation(fields: [statusOperationId], references: [id])
-  quantity        Float
-  dateEntry       DateTime
-  priceEntry      Float
-  priceExit       Float
-  spread          Float
+  id                Int               @id @default(autoincrement())
+  symbolId          Int               // Foreign key to Symbol
+  symbol            Symbol            @relation(fields: [symbolId], references: [id])
+  operationTypeId   Int               // Foreign key to OperationType
+  operationType     OperationType     @relation(fields: [operationTypeId], references: [id])
+  resultId          Int               // Foreign key to Result
+  result            Result            @relation(fields: [resultId], references: [id])
+  statusOperationId Int               // Foreign key to StatusOperation
+  statusOperation   StatusOperation   @relation(fields: [statusOperationId], references: [id])
+  strategyId        Int?              // Foreign key to Strategy (opcional al principio para compatibilidad)
+  strategy          Strategy?         @relation(fields: [strategyId], references: [id])
+  quantity          Float
+  dateEntry         DateTime
+  priceEntry        Float
+  priceExit         Float
+  spread            Float
+  tradeDetail       TradeDetail?      // Relación uno a uno con TradeDetail
 }
 
 model Symbol {
@@ -63,30 +71,82 @@ model StatusOperation {
 }
 
 model Strategy {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  status      String   @default("active")
+  id                    Int                   @id @default(autoincrement())
+  name                  String
+  description           String
+  createdAt             DateTime              @default(now())
+  status                String                @default("active")
+  strategyConfirmations StrategyConfirmation[] // Relación muchos a muchos con Confirmation
+  trades                Trade[]               // Relación uno a muchos con Trade
 }
 
 model Confirmation {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String
-  createdAt   DateTime    @default(now())
-  status      String      @default("active")
-  updatedAt   DateTime    @updatedAt
-  conditions  Condition[] // Relación uno a muchos con Condition
+  id                    Int                    @id @default(autoincrement())
+  name                  String
+  description           String
+  createdAt             DateTime               @default(now())
+  status                String                 @default("active")
+  updatedAt             DateTime               @updatedAt
+  conditions            Condition[]            // Relación uno a muchos con Condition
+  strategyConfirmations StrategyConfirmation[] // Relación muchos a muchos con Strategy
+  tradeConfirmations    TradeConfirmation[]    // Relación uno a muchos con TradeConfirmation
+}
+
+model StrategyConfirmation {
+  strategyId        Int
+  confirmationId    Int
+  status            String
+  createdAt         DateTime     @default(now())
+  strategy          Strategy     @relation(fields: [strategyId], references: [id])
+  confirmation      Confirmation @relation(fields: [confirmationId], references: [id])
+
+  @@id([strategyId, confirmationId])
+  @@map("strategy_confirmation")
 }
 
 model Condition {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  description        String
+  createdAt          DateTime            @default(now())
+  status             String              @default("active")
+  updatedAt          DateTime            @updatedAt
+  confirmationId     Int                 // Foreign key to Confirmation
+  confirmation       Confirmation        @relation(fields: [confirmationId], references: [id])
+  tradeConfirmations TradeConfirmation[] // Relación uno a muchos con TradeConfirmation
+}
+
+// Nuevo modelo para detalles del trade
+model TradeDetail {
+  id            Int                 @id @default(autoincrement())
+  tradeId       Int                 @unique // Clave externa a Trade (relación uno a uno)
+  trade         Trade               @relation(fields: [tradeId], references: [id], onDelete: Cascade)
+  observaciones String?             @db.Text // Texto explicativo de por qué se tomó este trade
+  imageUrlpre   String?             // URL de la imagen opcional
+  imageUrlpost  String?             // URL de la imagen opcional
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  confirmations TradeConfirmation[] // Relación uno a muchos con TradeConfirmation
+
+  @@index([tradeId])
+}
+
+// Nuevo modelo para las confirmaciones utilizadas en un trade
+model TradeConfirmation {
   id             Int          @id @default(autoincrement())
-  name           String
-  description    String
-  createdAt      DateTime     @default(now())
-  status         String       @default("active")
-  updatedAt      DateTime     @updatedAt
-  confirmationId Int          // Foreign key to Confirmation
+  tradeDetailId  Int          // Clave externa a TradeDetail
+  tradeDetail    TradeDetail  @relation(fields: [tradeDetailId], references: [id], onDelete: Cascade)
+  confirmationId Int          // Clave externa a Confirmation
   confirmation   Confirmation @relation(fields: [confirmationId], references: [id])
+  conditionId    Int          // Clave externa a Condition
+  condition      Condition    @relation(fields: [conditionId], references: [id])
+  notes          String?      @db.Text // Notas específicas para esta confirmación
+  imageUrl       String?      // URL de la imagen opcional
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([tradeDetailId, confirmationId]) // Asegura que una confirmación solo se usa una vez por trade
+  @@index([tradeDetailId])
+  @@index([confirmationId])
+  @@index([conditionId])
 }
