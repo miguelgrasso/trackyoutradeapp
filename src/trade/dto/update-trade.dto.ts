@@ -1,6 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateTradeDto } from './create-trade.dto';
-import { IsInt, IsNumber, IsDate, IsOptional } from 'class-validator';
+import { IsInt, IsNumber, IsDate, IsOptional, IsNotEmpty, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateTradeDto extends PartialType(CreateTradeDto) {
     @IsInt()
@@ -38,4 +39,28 @@ export class UpdateTradeDto extends PartialType(CreateTradeDto) {
     @IsNumber()
     @IsOptional()
     spread?: number;
+
+    @ApiProperty({
+        description: 'URL de la imagen previa',
+        example: 'https://example.com/image.jpg'
+    })
+    @IsString()
+    @IsOptional()
+    imageUrlpre: string;
+
+    @ApiProperty({
+        description: 'URL de la imagen posterior',
+        example: 'https://example.com/image.jpg'
+    })
+    @IsString()
+    @IsOptional()
+    imageUrlpost: string;
+
+    @ApiProperty({
+        description: 'ID de la estrategia',
+        example: 1
+    })
+    @IsInt()
+    @IsOptional()
+    strategyId?: number;        
 }

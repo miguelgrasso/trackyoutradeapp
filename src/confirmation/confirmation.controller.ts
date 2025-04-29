@@ -5,7 +5,7 @@ import { UpdateConfirmationDto } from './dto/update-confirmation.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 
 @ApiTags('Confirmations')
-@Controller('confirmation')
+@Controller('confirmations')
 export class ConfirmationController {
   constructor(private readonly confirmationService: ConfirmationService) {}
 
@@ -31,6 +31,15 @@ export class ConfirmationController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.confirmationService.findOne(+id);
+  }
+
+  @ApiOperation({ summary: 'Get conditions for a specific confirmation' })
+  @ApiParam({ name: 'id', description: 'Confirmation ID' })
+  @ApiResponse({ status: 200, description: 'Return the conditions for the confirmation.' })
+  @ApiResponse({ status: 404, description: 'Confirmation not found.' })
+  @Get(':id/conditions')
+  findConditions(@Param('id') id: string) {
+    return this.confirmationService.findConditions(+id);
   }
 
   @ApiOperation({ summary: 'Update a confirmation' })

@@ -14,6 +14,7 @@ export class ConditionController {
   @ApiResponse({ status: 201, description: 'The condition has been successfully created.' })
   create(@Body() createConditionDto: CreateConditionDto) {
     return this.conditionService.create(createConditionDto);
+    
   }
 
   @Get()
