@@ -2,14 +2,18 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true, // Habilita la transformación
+      whitelist: true, // Remueve propiedades no decoradas
+      forbidNonWhitelisted: true, // Lanza error si hay propiedades no permitidas
     }),
   );
+  app.useGlobalFilters(new AllExceptionsFilter());
   app.setGlobalPrefix('api');
   app.enableCors();
 

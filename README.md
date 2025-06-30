@@ -1,98 +1,232 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Track Your Trade App - Backend API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Una aplicación backend robusta para el seguimiento y gestión de operaciones de trading, construida con NestJS, TypeScript y principios SOLID.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Características
 
-## Description
+- **API RESTful** completa para gestión de trades
+- **Arquitectura SOLID** implementada en todo el proyecto
+- **Repository Pattern** con interfaces para abstracción de datos
+- **Strategy Pattern** para logging y validación
+- **Caching inteligente** con múltiples estrategias
+- **Validación robusta** con pipes de NestJS
+- **Documentación automática** con Swagger/OpenAPI
+- **Base de datos PostgreSQL** con Prisma ORM
+- **Testing completo** con Jest
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🛠️ Tecnologías
 
-## Project setup
+- **Framework**: NestJS 10.x
+- **Lenguaje**: TypeScript 5.x
+- **Base de datos**: PostgreSQL
+- **ORM**: Prisma
+- **Documentación**: Swagger/OpenAPI
+- **Testing**: Jest + Supertest
+- **Containerización**: Docker & Docker Compose
+- **Validación**: class-validator, class-transformer
 
+## 📋 Prerrequisitos
+
+- Node.js >= 18.0.0
+- npm o yarn
+- Docker y Docker Compose
+- PostgreSQL (o usar el contenedor Docker incluido)
+
+## 🔧 Instalación
+
+### 1. Clonar el repositorio
 ```bash
-$ npm install
+git clone <repository-url>
+cd trackyoutradeapp
 ```
 
-## Compile and run the project
-
+### 2. Instalar dependencias
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
-
+### 3. Configurar variables de entorno
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cp .env.example .env
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
+Editar `.env` con tus configuraciones:
+```env
+DATABASE_URL="postgresql://admin:admin@localhost:5499/tradedb?schema=public"
+NODE_ENV=development
+PORT=4000
+ENABLE_CACHING=true
+ENABLE_DB_LOGGING=false
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 4. Levantar la base de datos
+```bash
+docker-compose up -d
+```
 
-## Resources
+### 5. Ejecutar migraciones
+```bash
+npx prisma migrate dev
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+### 6. Poblar la base de datos (opcional)
+```bash
+npx prisma db seed
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 🚀 Ejecución
 
-## Support
+### Desarrollo
+```bash
+npm run start:dev
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Producción
+```bash
+npm run build
+npm run start:prod
+```
 
-## Stay in touch
+La API estará disponible en: `http://localhost:4000/api`
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 📚 Documentación de la API
 
-## License
+Una vez que la aplicación esté ejecutándose, puedes acceder a:
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- **Swagger UI**: `http://localhost:4000/api`
+- **OpenAPI JSON**: `http://localhost:4000/api-json`
+
+## 🔗 Endpoints Principales
+
+### Trades
+- `GET /api/trades` - Listar todos los trades
+- `POST /api/trades` - Crear nuevo trade
+- `GET /api/trades/:id` - Obtener trade específico
+- `PATCH /api/trades/:id` - Actualizar trade
+- `DELETE /api/trades/:id` - Eliminar trade
+
+### Símbolos
+- `GET /api/symbol` - Listar símbolos
+- `POST /api/symbol` - Crear símbolo
+- `GET /api/symbol/:id` - Obtener símbolo específico
+
+### Estrategias
+- `GET /api/strategy` - Listar estrategias
+- `POST /api/strategy` - Crear estrategia
+- `GET /api/strategy/:id` - Obtener estrategia específica
+
+### Otros Endpoints
+- `/api/result` - Gestión de resultados
+- `/api/operation-type` - Tipos de operación
+- `/api/status-operation` - Estados de operación
+- `/api/confirmations` - Confirmaciones
+- `/api/conditions` - Condiciones
+
+## 🧪 Testing
+
+### Ejecutar todos los tests
+```bash
+npm run test
+```
+
+### Tests con coverage
+```bash
+npm run test:cov
+```
+
+### Tests end-to-end
+```bash
+npm run test:e2e
+```
+
+### Tests en modo watch
+```bash
+npm run test:watch
+```
+
+## 🏗️ Arquitectura
+
+El proyecto sigue los principios SOLID y utiliza:
+
+- **Dependency Injection**: Para inversión de control
+- **Repository Pattern**: Abstracción de acceso a datos
+- **Strategy Pattern**: Para logging y validación
+- **Decorator Pattern**: Para caching
+- **Factory Pattern**: Para configuración de servicios
+
+### Estructura del Proyecto
+
+```
+src/
+├── common/           # Servicios y utilities compartidos
+│   ├── interfaces/   # Interfaces comunes
+│   ├── services/     # Servicios globales
+│   ├── filters/      # Filtros de excepción
+│   ├── logging/      # Sistema de logging
+│   └── caching/      # Sistema de cache
+├── config/           # Configuraciones
+├── trade/            # Módulo de trades
+│   ├── dto/         # Data Transfer Objects
+│   ├── entities/    # Entidades
+│   ├── interfaces/  # Interfaces del módulo
+│   ├── repositories/ # Implementaciones de repositorios
+│   └── validators/  # Validadores de negocio
+└── [otros-módulos]/ # Otros módulos de la aplicación
+```
+
+## 🐳 Docker
+
+### Desarrollo con Docker
+```bash
+docker-compose up -d
+```
+
+### Solo base de datos
+```bash
+docker-compose up postgres -d
+```
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📝 Scripts Disponibles
+
+- `npm run build` - Compilar para producción
+- `npm run start` - Iniciar en producción
+- `npm run start:dev` - Iniciar en desarrollo con watch
+- `npm run lint` - Ejecutar linter
+- `npm run test` - Ejecutar tests
+- `npm run test:e2e` - Tests end-to-end
+- `npm run prisma:generate` - Generar cliente Prisma
+- `npm run prisma:migrate` - Ejecutar migraciones
+
+## 🐛 Troubleshooting
+
+### Error de conexión a la base de datos
+1. Verificar que Docker esté ejecutándose
+2. Comprobar que el puerto 5499 esté disponible
+3. Revisar las variables de entorno en `.env`
+
+### Error de compilación TypeScript
+1. Ejecutar `npm run build` para ver errores detallados
+2. Verificar que todas las dependencias estén instaladas
+3. Limpiar cache con `npm run clean` (si está disponible)
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+
+## 👥 Autores
+
+- **Tu Nombre** - *Trabajo inicial* - [TuGitHub](https://github.com/tuusario)
+
+## 🙏 Agradecimientos
+
+- NestJS por el excelente framework
+- Prisma por el ORM moderno
+- La comunidad de TypeScript

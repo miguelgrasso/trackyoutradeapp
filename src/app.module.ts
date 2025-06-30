@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
+import { CommonModule } from './common/common.module';
 import { TradeModule } from './trade/trade.module';
 import { SymbolModule } from './symbol/symbol.module';
 import { ResultModule } from './result/result.module';
@@ -16,7 +16,7 @@ import { TradeConfirmationModule } from './trade-confirmation/trade-confirmation
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGODB_URI || 'mongodb://localhost:27017/tradingapp'),
+    CommonModule,
     TradeModule,
     SymbolModule,
     ResultModule,

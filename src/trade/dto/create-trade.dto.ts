@@ -77,28 +77,14 @@ export class CreateTradeDto {
     @IsNotEmpty()
     spread: number;
     
-    @ApiProperty({
-        description: 'URL de la imagen previa',
-        example: 'https://example.com/image.jpg'
-    })
-    @IsString()
-    @IsOptional()
-    imageUrlEntry: string;
 
     @ApiProperty({
-        description: 'URL de la imagen posterior',
-        example: 'https://example.com/image.jpg'
-    })
-    @IsString()
-    @IsOptional()
-    imageUrlExit: string;
-
-    @ApiProperty({
-        description: 'ID de la estrategia',
-        example: 1
+        description: 'ID de la estrategia (opcional)',
+        example: 1,
+        required: false
     })
     @IsInt()
-    @IsNotEmpty()
-    strategyId: number;
+    @IsOptional()
+    strategyId?: number;
 }
 

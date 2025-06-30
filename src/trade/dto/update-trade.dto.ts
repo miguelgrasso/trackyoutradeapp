@@ -42,19 +42,21 @@ export class UpdateTradeDto extends PartialType(CreateTradeDto) {
 
     @ApiProperty({
         description: 'URL de la imagen previa',
-        example: 'https://example.com/image.jpg'
+        example: 'https://example.com/image.jpg',
+        required: false
     })
     @IsString()
     @IsOptional()
-    imageUrlpre: string;
+    imageUrlpre?: string;
 
     @ApiProperty({
         description: 'URL de la imagen posterior',
-        example: 'https://example.com/image.jpg'
+        example: 'https://example.com/image.jpg',
+        required: false
     })
     @IsString()
     @IsOptional()
-    imageUrlpost: string;
+    imageUrlpost?: string;
 
     @ApiProperty({
         description: 'ID de la estrategia',
